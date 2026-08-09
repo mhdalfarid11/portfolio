@@ -1,0 +1,15 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Node (if used)
+node_modules/
+
+# VSCode
+.vscode/
+
+# Mac
+.AppleDouble
+
+# Python cache
+__pycache__/
