@@ -1,54 +1,26 @@
-/* =========================================================
-   MUHAMMAD AL FARID - PORTFOLIO
-   Native JavaScript
-   ========================================================= */
-
-
-/* =========================================================
-   DOM READY
-   ========================================================= */
+/* =====================================================
+   PORTFOLIO JAVASCRIPT
+===================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
+    /* =================================================
+       MOBILE NAVIGATION
+    ================================================= */
 
     const navToggle = document.getElementById("nav-toggle");
     const navList = document.getElementById("nav-list");
-    const header = document.getElementById("header");
-    const navLinks = document.querySelectorAll(".nav-link");
-    const sections = Array.from(document.querySelectorAll("main section"));
-
-    const form = document.getElementById("contact-form");
-    const backBtn = document.getElementById("back-to-top");
-
-    const themeToggle = document.getElementById("theme-toggle");
-    const profileImg = document.getElementById("profile-img");
-
-    const root = document.documentElement;
-
-
-    /* =====================================================
-       ENABLE JAVASCRIPT ANIMATION
-       ===================================================== */
-
-    root.classList.add("js-ready");
-
-
-    /* =====================================================
-       MOBILE NAVIGATION
-       ===================================================== */
 
     if (navToggle && navList) {
 
         navToggle.addEventListener("click", () => {
 
-            const open = navList.classList.toggle("open");
+            const isOpen =
+                navList.classList.toggle("open");
 
             navToggle.setAttribute(
                 "aria-expanded",
-                String(open)
+                String(isOpen)
             );
 
         });
@@ -56,23 +28,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       SMOOTH SCROLLING
-       ===================================================== */
+    /* =================================================
+       SMOOTH SCROLL
+    ================================================= */
 
-    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    document
+        .querySelectorAll('a[href^="#"]')
+        .forEach((link) => {
 
-        link.addEventListener("click", (event) => {
+            link.addEventListener("click", (event) => {
 
-            const href = link.getAttribute("href");
+                const href =
+                    link.getAttribute("href");
 
-            if (!href || href === "#") {
-                return;
-            }
+                if (!href || href === "#") {
+                    return;
+                }
 
-            const target = document.querySelector(href);
+                const target =
+                    document.querySelector(href);
 
-            if (target) {
+                if (!target) {
+                    return;
+                }
 
                 event.preventDefault();
 
@@ -81,327 +59,114 @@ document.addEventListener("DOMContentLoaded", () => {
                     block: "start"
                 });
 
-            }
+                if (navList) {
+                    navList.classList.remove("open");
+                }
 
-            /* Close mobile navigation */
-
-            if (navList) {
-                navList.classList.remove("open");
-            }
-
-            if (navToggle) {
-                navToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-            }
-
-        });
-
-    });
-
-
-    /* =====================================================
-       HEADER SCROLL EFFECT
-       ===================================================== */
-
-    function handleScroll() {
-
-        if (header) {
-
-            if (window.scrollY > 10) {
-                header.classList.add("scrolled");
-            } else {
-                header.classList.remove("scrolled");
-            }
-
-        }
-
-        updateActiveLink();
-        backToTopVisibility();
-
-    }
-
-
-    /* =====================================================
-       ACTIVE NAVIGATION LINK
-       ===================================================== */
-
-    function updateActiveLink() {
-
-        if (!sections.length) {
-            return;
-        }
-
-        const offset = window.innerHeight / 3;
-
-        let currentSection = sections.find(
-            (section) =>
-                section.getBoundingClientRect().top - offset < 0
-        );
-
-        if (!currentSection) {
-            currentSection = sections[0];
-        }
-
-        navLinks.forEach((link) => {
-
-            const href = link.getAttribute("href");
-
-            link.classList.toggle(
-                "active",
-                href === `#${currentSection.id}`
-            );
-
-        });
-
-    }
-
-
-    /* =====================================================
-       SCROLL REVEAL
-       ===================================================== */
-
-    const revealElements = document.querySelectorAll(
-        ".hero, .about-grid, .skill-card, .project-card, .timeline-item, .contact-grid"
-    );
-
-
-    revealElements.forEach((element) => {
-
-        element.classList.add("scroll-reveal");
-
-    });
-
-
-    /* =====================================================
-       INTERSECTION OBSERVER
-       ===================================================== */
-
-    if ("IntersectionObserver" in window) {
-
-        const revealObserver = new IntersectionObserver(
-            (entries, observer) => {
-
-                entries.forEach((entry) => {
-
-                    if (entry.isIntersecting) {
-
-                        entry.target.classList.add("visible");
-
-                        observer.unobserve(entry.target);
-
-                    }
-
-                });
-
-            },
-            {
-                threshold: 0.1
-            }
-        );
-
-
-        revealElements.forEach((element) => {
-
-            revealObserver.observe(element);
-
-        });
-
-    } else {
-
-        /* Browser fallback */
-
-        revealElements.forEach((element) => {
-
-            element.classList.add("visible");
-
-        });
-
-    }
-
-
-    /* =====================================================
-       CONTACT FORM
-       ===================================================== */
-
-    if (form) {
-
-        form.addEventListener("submit", (event) => {
-
-            event.preventDefault();
-
-            const name = form.name
-                ? form.name.value.trim()
-                : "";
-
-            const email = form.email
-                ? form.email.value.trim()
-                : "";
-
-            const message = form.message
-                ? form.message.value.trim()
-                : "";
-
-
-            if (!name || !email || !message) {
-
-                alert(
-                    "Mohon lengkapi semua field sebelum mengirim."
-                );
-
-                return;
-
-            }
-
-
-            /* Email validation */
-
-            const emailPattern =
-                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-            if (!emailPattern.test(email)) {
-
-                alert(
-                    "Silakan masukkan alamat email yang valid."
-                );
-
-                return;
-
-            }
-
-
-            alert(
-                "Pesan tervalidasi. Pesan siap dikirim."
-            );
-
-
-            form.reset();
-
-        });
-
-    }
-
-
-    /* =====================================================
-       BACK TO TOP
-       ===================================================== */
-
-    function backToTopVisibility() {
-
-        if (!backBtn) {
-            return;
-        }
-
-        if (window.scrollY > 400) {
-
-            backBtn.style.display = "flex";
-
-        } else {
-
-            backBtn.style.display = "none";
-
-        }
-
-    }
-
-
-    if (backBtn) {
-
-        backBtn.addEventListener("click", () => {
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
             });
 
         });
 
-    }
+
+    /* =================================================
+       HEADER SCROLL EFFECT
+    ================================================= */
+
+    const header =
+        document.getElementById("header");
+
+    const handleScroll = () => {
+
+        if (!header) {
+            return;
+        }
+
+        if (window.scrollY > 20) {
+
+            header.classList.add("scrolled");
+
+        } else {
+
+            header.classList.remove("scrolled");
+
+        }
+
+    };
+
+    window.addEventListener(
+        "scroll",
+        handleScroll,
+        { passive: true }
+    );
+
+    handleScroll();
 
 
-    /* =====================================================
+    /* =================================================
        DARK / LIGHT MODE
-       ===================================================== */
+    ================================================= */
+
+    const themeToggle =
+        document.getElementById("theme-toggle");
 
     const savedTheme =
         localStorage.getItem("theme");
 
-
     if (savedTheme === "dark") {
 
-        root.setAttribute(
-            "data-theme",
-            "dark"
-        );
-
-        if (themeToggle) {
-
-            themeToggle.setAttribute(
-                "aria-pressed",
-                "true"
-            );
-
-        }
+        document.documentElement
+            .setAttribute("data-theme", "dark");
 
     } else {
 
-        root.setAttribute(
-            "data-theme",
-            "light"
-        );
-
-        if (themeToggle) {
-
-            themeToggle.setAttribute(
-                "aria-pressed",
-                "false"
-            );
-
-        }
+        document.documentElement
+            .setAttribute("data-theme", "light");
 
     }
-
 
     if (themeToggle) {
 
-        themeToggle.addEventListener("click", () => {
+        themeToggle.addEventListener(
+            "click",
+            () => {
 
-            const currentTheme =
-                root.getAttribute("data-theme");
+                const current =
+                    document.documentElement
+                        .getAttribute("data-theme");
 
-            const nextTheme =
-                currentTheme === "dark"
-                    ? "light"
-                    : "dark";
+                const next =
+                    current === "dark"
+                        ? "light"
+                        : "dark";
 
+                document.documentElement
+                    .setAttribute(
+                        "data-theme",
+                        next
+                    );
 
-            root.setAttribute(
-                "data-theme",
-                nextTheme
-            );
+                localStorage.setItem(
+                    "theme",
+                    next
+                );
 
+                themeToggle.setAttribute(
+                    "aria-pressed",
+                    String(next === "dark")
+                );
 
-            localStorage.setItem(
-                "theme",
-                nextTheme
-            );
-
-
-            themeToggle.setAttribute(
-                "aria-pressed",
-                String(nextTheme === "dark")
-            );
-
-        });
+            }
+        );
 
     }
 
 
-    /* =====================================================
+    /* =================================================
        PROFILE IMAGE FALLBACK
-       ===================================================== */
+    ================================================= */
+
+    const profileImg =
+        document.getElementById("profile-img");
 
     if (profileImg) {
 
@@ -410,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
             () => {
 
                 if (
-                    !profileImg.src.endsWith(
+                    !profileImg.src.includes(
                         "profile.svg"
                     )
                 ) {
@@ -426,21 +191,266 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       INITIAL STATE
-       ===================================================== */
+    /* =================================================
+       SCROLL REVEAL
+    ================================================= */
 
-    handleScroll();
+    const revealElements =
+        document.querySelectorAll(
+            ".hero, .about-grid, .skill-card, " +
+            ".project-card, .timeline-item, " +
+            ".contact-grid"
+        );
+
+    if ("IntersectionObserver" in window) {
+
+        revealElements.forEach((element) => {
+
+            element.classList.add("js-reveal");
+
+        });
+
+        const revealObserver =
+            new IntersectionObserver(
+                (entries, observer) => {
+
+                    entries.forEach((entry) => {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            entry.target
+                                .classList
+                                .add("visible");
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.12
+                }
+            );
+
+        revealElements.forEach(
+            (element) => {
+
+                revealObserver.observe(element);
+
+            }
+        );
+
+    } else {
+
+        /* Browser lama:
+           pastikan semua konten tetap terlihat */
+
+        revealElements.forEach(
+            (element) => {
+
+                element.classList.add(
+                    "visible"
+                );
+
+            }
+        );
+
+    }
 
 
-    /* =====================================================
-       SCROLL EVENT
-       ===================================================== */
+    /* =================================================
+       BACK TO TOP
+    ================================================= */
+
+    const backBtn =
+        document.getElementById(
+            "back-to-top"
+        );
+
+    const updateBackButton = () => {
+
+        if (!backBtn) {
+            return;
+        }
+
+        if (window.scrollY > 400) {
+
+            backBtn.style.display = "flex";
+
+        } else {
+
+            backBtn.style.display = "none";
+
+        }
+
+    };
 
     window.addEventListener(
         "scroll",
-        handleScroll,
+        updateBackButton,
         { passive: true }
     );
+
+    updateBackButton();
+
+    if (backBtn) {
+
+        backBtn.addEventListener(
+            "click",
+            () => {
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+    }
+
+
+    /* =================================================
+       CONTACT FORM
+    ================================================= */
+
+    const form =
+        document.getElementById(
+            "contact-form"
+        );
+
+    if (form) {
+
+        form.addEventListener(
+            "submit",
+            (event) => {
+
+                event.preventDefault();
+
+                const name =
+                    form.querySelector(
+                        '[name="name"]'
+                    );
+
+                const email =
+                    form.querySelector(
+                        '[name="email"]'
+                    );
+
+                const message =
+                    form.querySelector(
+                        '[name="message"]'
+                    );
+
+                if (
+                    !name ||
+                    !email ||
+                    !message
+                ) {
+                    return;
+                }
+
+                if (
+                    !name.value.trim() ||
+                    !email.value.trim() ||
+                    !message.value.trim()
+                ) {
+
+                    alert(
+                        "Mohon lengkapi semua field."
+                    );
+
+                    return;
+
+                }
+
+                const emailPattern =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (
+                    !emailPattern.test(
+                        email.value.trim()
+                    )
+                ) {
+
+                    alert(
+                        "Silakan masukkan email yang valid."
+                    );
+
+                    return;
+
+                }
+
+                alert(
+                    "Pesan berhasil divalidasi."
+                );
+
+                form.reset();
+
+            }
+        );
+
+    }
+
+
+    /* =================================================
+       ACTIVE NAVIGATION
+    ================================================= */
+
+    const sections =
+        document.querySelectorAll(
+            "main section[id]"
+        );
+
+    const navLinks =
+        document.querySelectorAll(
+            ".nav-link"
+        );
+
+    const updateActiveLink = () => {
+
+        let currentSection = "";
+
+        sections.forEach((section) => {
+
+            const sectionTop =
+                section.offsetTop - 150;
+
+            if (
+                window.scrollY >= sectionTop
+            ) {
+
+                currentSection =
+                    section.getAttribute("id");
+
+            }
+
+        });
+
+        navLinks.forEach((link) => {
+
+            link.classList.toggle(
+                "active",
+                link.getAttribute("href") ===
+                    "#" + currentSection
+            );
+
+        });
+
+    };
+
+    window.addEventListener(
+        "scroll",
+        updateActiveLink,
+        { passive: true }
+    );
+
+    updateActiveLink();
 
 });
